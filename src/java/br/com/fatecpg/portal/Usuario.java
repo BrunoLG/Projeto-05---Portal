@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Usuario {
     private long cod;
+    private String nome;
     private String usuario;
     private long senha;
-    private String nome;
     private String curso;
     private String permissao;
 
-    public Usuario(long cod, String usuario, long senha, String nome, String curso, String permissao) {
+    public Usuario(long cod, String nome, String usuario, long senha, String curso, String permissao) {
         this.cod = cod;
         this.usuario = usuario;
         this.senha = senha;
@@ -68,12 +68,12 @@ public class Usuario {
     }
 
     public static Usuario getUsuario(String login, String senha) throws Exception {
-        String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA," +
-                        "(SELECT C.NM_CURSO FROM TB_CURSO C" +
-                            "WHERE U.CD_CURSO = C.CD_CURSO)," +
-                        "(SELECT P.NM_PERMISSAO FROM TB_PERMISSAO P" +
-                            "WHERE U.CD_PERMISSAO = P.CD_PERMISSAO)" +
-                    "FROM TB_USUARIO U WHERE NM_USUARIO = ? AND CD_SENHA = ?";
+        String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA, " +
+                        " (SELECT C.NM_CURSO FROM TB_CURSO C " +
+                            " WHERE U.CD_CURSO = C.CD_CURSO), " +
+                        " (SELECT P.NM_PERMISSAO FROM TB_PERMISSAO P " +
+                            "WHERE U.CD_PERMISSAO = P.CD_PERMISSAO) " +
+                    " FROM TB_USUARIO U WHERE NM_LOGIN = ? AND CD_SENHA = ? ";
         Object parameters[] = {login, senha.hashCode()};
         
         ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, parameters);
@@ -82,32 +82,33 @@ public class Usuario {
         } else {
             Object row[] = list.get(0);
             Usuario u = new Usuario(
-                    (long) row[0], 
-                    (String) row[1], 
-                    (long) row[2], 
-                    (String) row[3], 
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (long) row[3], 
                     (String) row[4],
                     (String) row[5]);
+            System.out.println(u.cod);
             return u;
         }
     }
     
     public static ArrayList<Usuario> getUsuarios() throws Exception {
-        String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA," +
-                        "(SELECT C.NM_CURSO FROM TB_CURSO C" +
-                            "WHERE U.CD_CURSO = C.CD_CURSO)," +
-                        "(SELECT P.NM_PERMISSAO FROM TB_PERMISSAO P" +
-                            "WHERE U.CD_PERMISSAO = P.CD_PERMISSAO)" +
-                    "FROM TB_USUARIO U";
+        String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA, " +
+                        " (SELECT C.NM_CURSO FROM TB_CURSO C " +
+                            " WHERE U.CD_CURSO = C.CD_CURSO), " +
+                        " (SELECT P.NM_PERMISSAO FROM TB_PERMISSAO P " +
+                            "WHERE U.CD_PERMISSAO = P.CD_PERMISSAO) " +
+                    " FROM TB_USUARIO U ";
         ArrayList<Usuario> usuarios = new ArrayList<>();
         ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{});
         for (int i = 0; i < list.size(); i++) {
             Object row[] = list.get(i);
             Usuario u = new Usuario(
-                    (long) row[0], 
-                    (String) row[1], 
-                    (long) row[2], 
-                    (String) row[3], 
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (long) row[3], 
                     (String) row[4],
                     (String) row[5]);
             usuarios.add(u);
@@ -116,18 +117,18 @@ public class Usuario {
     }
     
     public static void adicionarUsuario (String nome, String login, long senha, String curso, String permissao) throws Exception{
-        String SQL = "INSERT INTO TB_USUARIO VALUES (default, ?, ?, ?," +
-                        "(SELECT CD_CURSO FROM TB_CURSO" +
-                            "WHERE NM_CURSO = ?)," +
-                        "(SELECT CD_PERMISSAO FROM TB_PERMISSAO" +
-                            "WHERE NM_PERMISSAO = ?)" +
-                      ");";
+        String SQL = "INSERT INTO TB_USUARIO VALUES (default, ?, ?, ?, " +
+                        " (SELECT CD_CURSO FROM TB_CURSO " +
+                            "WHERE NM_CURSO = ? ), " +
+                        " (SELECT CD_PERMISSAO FROM TB_PERMISSAO " +
+                            " WHERE NM_PERMISSAO = ? ) " +
+                      ")";
         Object parameters[] = {nome, login, senha, curso, permissao};
         DatabaseConnector.execute(SQL, parameters);
     }
     
     public static void removerUsuario(long id) throws Exception{
-        String SQL = "DELETE FROM TB_USUARIO WHERE CD_USUARIO = ?";
+        String SQL = " DELETE FROM TB_USUARIO WHERE CD_USUARIO = ? ";
         Object parameters[] = {id};
         DatabaseConnector.execute(SQL, parameters);
     }
