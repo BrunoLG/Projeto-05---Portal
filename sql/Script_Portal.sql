@@ -40,7 +40,7 @@ insert into tb_usuario values
     (default, 'Administrador Supremo', 'admin', 1509442, null, 1),
     (default, 'Fernando Bacic', 'professor', 1509442, 1, 2),
     (default, 'Ricardo Pupo', 'pupo', 1509442, 2, 2),
-    (default, 'Paolla Gil', 'bruno', 1509442, 1, 3),
+    (default, 'Paolla Gil', 'paolla', 1509442, 1, 3),
     (default, 'Milena ALves', 'milena', 1509442, 2, 3),
     (default, 'Fernando Costa', 'fernando', 1509442, 3, 3);
 

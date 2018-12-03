@@ -4,13 +4,14 @@
     if (request.getParameter("formRemoverUsuario") != null){
         try{
             long id = Long.parseLong(request.getParameter("cod"));
-            System.out.println(id);
             Usuario.removerUsuario(id);
             response.sendRedirect(request.getRequestURI());
         } catch (Exception e) {
             error = e.getMessage();
         }
     }    
+    
+    //TODO Alterar Usuário
     
     if (request.getParameter("formNovoUsuario") != null){
         String nome = request.getParameter("nome");
