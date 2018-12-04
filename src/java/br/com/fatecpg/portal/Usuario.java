@@ -92,6 +92,31 @@ public class Usuario {
         }
     }
     
+    public static Usuario getUsuario(long cod) throws Exception {
+        String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA, " +
+                        " (SELECT C.NM_CURSO FROM TB_CURSO C " +
+                            " WHERE U.CD_CURSO = C.CD_CURSO), " +
+                        " (SELECT P.NM_PERMISSAO FROM TB_PERMISSAO P " +
+                            "WHERE U.CD_PERMISSAO = P.CD_PERMISSAO) " +
+                    " FROM TB_USUARIO U WHERE CD_USUARIO = ? ";
+        Object parameters[] = {cod};
+        
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, parameters);
+        if (list.isEmpty()){
+            return null;
+        } else {
+            Object row[] = list.get(0);
+            Usuario u = new Usuario(
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (long) row[3], 
+                    (String) row[4],
+                    (String) row[5]);
+            return u;
+        }
+    }
+    
     public static ArrayList<Usuario> getUsuarios() throws Exception {
         String SQL = "SELECT CD_USUARIO, NM_USUARIO, NM_LOGIN, CD_SENHA, " +
                         " (SELECT C.NM_CURSO FROM TB_CURSO C " +
@@ -123,6 +148,12 @@ public class Usuario {
                             " WHERE NM_PERMISSAO = ? ) " +
                       ")";
         Object parameters[] = {nome, login, senha, curso, permissao};
+        DatabaseConnector.execute(SQL, parameters);
+    }
+    
+    public static void alterarUsuario(String nome, String usuario, long senha, long curso, long permissao, long cod) throws Exception{
+        String SQL = "UPDATE TB_USUARIO SET NM_USUARIO = ? , NM_LOGIN = ? , CD_SENHA = ? , CD_CURSO = ? , CD_PERMISSAO = ? WHERE CD_USUARIO = ? ";
+        Object parameters[] = {nome, usuario, senha, curso, permissao, cod};
         DatabaseConnector.execute(SQL, parameters);
     }
     

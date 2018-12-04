@@ -1,17 +1,32 @@
+<%@page import="br.com.fatecpg.portal.Curso"%>
+<%@page import="br.com.fatecpg.portal.Permissao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%  String error = null;
     if (request.getParameter("formRemoverUsuario") != null){
         try{
-            long id = Long.parseLong(request.getParameter("cod"));
-            Usuario.removerUsuario(id);
+            long cod = Long.parseLong(request.getParameter("cod"));
+            Usuario.removerUsuario(cod);
             response.sendRedirect(request.getRequestURI());
         } catch (Exception e) {
             error = e.getMessage();
         }
     }    
     
-    //TODO Alterar Usuário
+    if (request.getParameter("formAlterarUsuario") != null){
+        long cod = Long.parseLong(request.getParameter("cod"));
+        String nome = request.getParameter("nome");
+        String usuario = request.getParameter("usuario");
+        long senha = request.getParameter("senha").hashCode();
+        long curso =  Long.parseLong(request.getParameter("curso"));
+        long permissao =  Long.parseLong(request.getParameter("permissao"));
+        try {
+            Usuario.alterarUsuario(nome, usuario, senha, curso, permissao, cod);
+            response.sendRedirect(request.getRequestURI());
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
     
     if (request.getParameter("formNovoUsuario") != null){
         String nome = request.getParameter("nome");
@@ -33,7 +48,6 @@
     </head>
     <body>
         <%@include file="../WEB-INF/jspf/header.jspf" %>
-        <h1>Usuários</h1>
         <% if (session.getAttribute("usuario") == null) { %>
             <h2>É preciso estar autenticado para acessar este recurso</h2>
         <% } else { 
@@ -44,29 +58,51 @@
                 if (errorMessage != null) { %>
                     <h2 style="color: red"><%= error %></h2>
                 <% } %>
-            <fieldset>
-                <legend>Novo usuário</legend>
+            <h1>Usuários</h1>
+                <% if (request.getParameter("tableAlterarUsuario") != null) {
+                    Usuario usuario = Usuario.getUsuario(Long.parseLong(request.getParameter("cod"))); %>
+                <h2>Alterar Usuário</h2>
+                <form>
+                    Código: <input type="text" name="cod" value="<%= usuario.getCod() %>" readonly />
+                    Nome: <input type="text" name="nome" value="<%= usuario.getNome() %>" required />
+                    Permissão: 
+                    <select name="permissao" required >
+                            <% for (Permissao p : Permissao.getPermissoes()) { %>
+                                <option value="<%= p.getCod() %>"><%= p.getNome() %></option>
+                            <% } %>
+                    </select>
+                    Curso: 
+                    <select name="curso" required >
+                        <% for (Curso c : Curso.getCursos()) { %>
+                                <option value="<%= c.getCod() %>"><%= c.getNome() %></option>
+                        <% } %>
+                    </select>
+                    Usuário: <input type="text" name="usuario" value="<%= usuario.getUsuario() %>" required />   
+                    Senha: <input type="password" name="senha" required />   
+                    <input type="submit" name="formAlterarUsuario" value="Alterar" />
+                    <a href="usuario.jsp" role="button">Voltar</a>
+                </form>
+                <% } else { %>
+                <h2>Novo usuário</h2>
                 <form>
                     Nome: <input type="text" name="nome" required />
                     Permissão: 
                     <select name="permissao" required >
-                        <option value="admin">Administrador</option>
-                        <option value="professor">Professor</option>
-                        <option value="aluno">Aluno</option>
+                            <% for (Permissao p : Permissao.getPermissoes()) { %>
+                                <option value="<%= p.getCod() %>"><%= p.getNome() %></option>
+                            <% } %>
                     </select>
                     Curso: 
                     <select name="curso" required >
-                        <option value="null">Nenhum</option>
-                        <option value="Análise e Desenvolvimento de Sistemas">Análise e Desenvolvimento de Sistemas</option>
-                        <option value="Comércio Exterior">Comércio Exterior</option>
-                        <option value="Processos Químicos">Processos Químicos</option>
+                        <% for (Curso c : Curso.getCursos()) { %>
+                                <option value="<%= c.getCod() %>"><%= c.getNome() %></option>
+                        <% } %>
                     </select>
                     Usuário: <input type="text" name="usuario" required />   
                     Senha: <input type="password" name="senha" required />   
                     <input type="submit" name="formNovoUsuario" value="Cadastrar" />
                 </form>
-            </fieldset>
-            <br>
+                <% } %>
             <table border="1">
                 <thead>
                     <tr>
@@ -89,7 +125,7 @@
                             <td>
                                 <form>
                                     <input type="hidden" name="cod" value="<%= u.getCod() %>" />
-                                    <input type="submit" name="formAlterarUsuario" value="Alterar" />
+                                    <input type="submit" name="tableAlterarUsuario" value="Alterar" />
                                     <input type="submit" name="formRemoverUsuario" value="Remover" />
                                 </form>
                             </td>
