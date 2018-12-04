@@ -88,7 +88,6 @@ public class Usuario {
                     (long) row[3], 
                     (String) row[4],
                     (String) row[5]);
-            System.out.println(u.cod);
             return u;
         }
     }

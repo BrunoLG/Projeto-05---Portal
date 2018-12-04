@@ -66,14 +66,12 @@ public class Aula {
         return aulas;
     }
     
-    public static void adicionarAula (String nome, String login, long senha, String curso, String permissao) throws Exception{
-        String SQL = "INSERT INTO TB_USUARIO VALUES (default, ?, ?, ?, " +
-                        " (SELECT CD_CURSO FROM TB_CURSO " +
-                            "WHERE NM_CURSO = ? ), " +
-                        " (SELECT CD_PERMISSAO FROM TB_PERMISSAO " +
-                            " WHERE NM_PERMISSAO = ? ) " +
+    public static void adicionarAula (String nome, String conteudo, String disciplina) throws Exception{
+        String SQL = "INSERT INTO TB_AULA VALUES (default, ?, ?, " +
+                        " (SELECT CD_DISCIPLINA FROM TB_DISCIPLINA " +
+                            "WHERE NM_DISCIPLINA = ? ) " +
                       ")";
-        Object parameters[] = {nome, login, senha, curso, permissao};
+        Object parameters[] = {nome, conteudo, disciplina};
         DatabaseConnector.execute(SQL, parameters);
     }
     
@@ -87,8 +85,8 @@ public class Aula {
         }  
     }
     
-    public static void removerUsuario(long id) throws Exception{
-        String SQL = " DELETE FROM TB_USUARIO WHERE CD_USUARIO = ? ";
+    public static void removerAula(long id) throws Exception{
+        String SQL = " DELETE FROM TB_AULA WHERE CD_AULA = ? ";
         Object parameters[] = {id};
         DatabaseConnector.execute(SQL, parameters);
     }
