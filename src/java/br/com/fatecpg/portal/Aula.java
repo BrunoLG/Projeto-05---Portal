@@ -47,6 +47,27 @@ public class Aula {
         this.disciplina = disciplina;
     }
     
+    public static Aula getAula(long cod) throws Exception {
+        String SQL = "SELECT CD_AULA, NM_AULA, DS_CONTEUDO, " +
+                        " (SELECT D.NM_DISCIPLINA FROM TB_DISCIPLINA D " +
+                            " WHERE A.CD_DISCIPLINA = D.CD_DISCIPLINA) " +
+                    " FROM TB_AULA A WHERE CD_AULA = ? ";
+        Object parameters[] = {cod};
+        
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, parameters);
+        if (list.isEmpty()){
+            return null;
+        } else {
+            Object row[] = list.get(0);
+            Aula a = new Aula(
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (String) row[3]);
+            return a;
+        }
+    }
+    
     public static ArrayList<Aula> getAulas() throws Exception {
         String SQL = "SELECT CD_AULA, NM_AULA, DS_CONTEUDO, " +
                         " (SELECT D.NM_DISCIPLINA FROM TB_DISCIPLINA D " +
@@ -85,9 +106,15 @@ public class Aula {
         }  
     }
     
-    public static void removerAula(long id) throws Exception{
+    public static void alterarAula(String nome, String conteudo, long cod_disciplina, long cod_aula) throws Exception{
+        String SQL = "UPDATE TB_AULA SET NM_AULA = ? , DS_CONTEUDO = ? , CD_DISCIPLINA = ? WHERE CD_AULA = ? ";
+        Object parameters[] = {nome, conteudo, cod_disciplina, cod_aula};
+        DatabaseConnector.execute(SQL, parameters);
+    }
+    
+    public static void removerAula(long cod) throws Exception{
         String SQL = " DELETE FROM TB_AULA WHERE CD_AULA = ? ";
-        Object parameters[] = {id};
+        Object parameters[] = {cod};
         DatabaseConnector.execute(SQL, parameters);
     }
 }

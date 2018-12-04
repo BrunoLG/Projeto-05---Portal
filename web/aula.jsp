@@ -1,3 +1,4 @@
+<%@page import="br.com.fatecpg.portal.Disciplina"%>
 <%@page import="br.com.fatecpg.portal.Aula"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -26,12 +27,36 @@
         String nome = request.getParameter("nome");
         String conteudo = request.getParameter("conteudo");
         String disciplina = (String) session.getAttribute("disciplina");
+        //long disciplina = (Long) session.getAttribute("disciplina");
         try {
             Aula.adicionarAula(nome, conteudo, disciplina);
             response.sendRedirect(request.getRequestURI());
         } catch (Exception e){
             error = e.getMessage();
         }
+    }
+    
+    if (request.getParameter("formAlterarAula") != null){
+        long cod = Long.parseLong(request.getParameter("cod"));
+        String nome = request.getParameter("nome");
+        String conteudo = request.getParameter("conteudo");
+        long disciplina = Long.parseLong(request.getParameter("disciplina"));
+        try {
+            Aula.alterarAula(nome, conteudo, disciplina, cod);
+            response.sendRedirect(request.getRequestURI());
+        } catch (Exception e){
+            error = e.getMessage();
+        }
+    }
+    
+    if (request.getParameter("formRemoverAula") != null){
+            long cod = Long.parseLong(request.getParameter("cod"));
+            try {
+                Aula.removerAula(cod);
+                response.sendRedirect(request.getRequestURI());
+            } catch (Exception e){
+                error = e.getMessage();
+            }
     }
 %>
 <html>
@@ -41,19 +66,64 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/header.jspf" %>
-        <h2>Nome da disciplina</h2>
         <% if (session.getAttribute("usuario") == null) { %>
         <h2>É preciso estar autenticado para acessar este recurso</h2>
         <% } else { 
-            if (usuario.getPermissao().equals("admin") || usuario.getPermissao().equals("professor")) { %>
-            <h2>Nova Aula</h2>
-            <form>
-                Nome: <input type="text" name="nome" required />
-                Contéudo: <input type="text" name="conteudo" required />   
-                <input type="hidden" name="disciplina" value="<%= session.getAttribute("disciplina") %>" />   
-                <input type="submit" name="formNovaAula" value="Cadastrar" />
-            </form>
-            <% }
+            usuario = (Usuario) session.getAttribute("usuario"); %>
+            <h2>Nome da disciplina</h2>
+            <% if (usuario.getPermissao().equals("admin") || usuario.getPermissao().equals("professor")) { 
+                if (request.getParameter("tableAlterarAula") != null) {
+                    Aula aula = Aula.getAula(Long.parseLong(request.getParameter("cod"))); %>
+                    <h2>Alterar Aula</h2>
+                    <form>
+                        Código: <input type="text" name="cod" value="<%= aula.getCod() %>" readonly /> 
+                        Nome: <input type="text" name="nome" value="<%= aula.getNome() %>" required />
+                        Contéudo: <input type="text" name="conteudo" value="<%= aula.getConteudo() %>" required />   
+                        Disciplina:
+                        <select name="disciplina" required >
+                            <% for (Disciplina d : Disciplina.getDisciplinas()) { %>
+                                <option value="<%= d.getCod() %>"><%= d.getNome() %></option>
+                            <% } %>
+                        </select>
+                        <input type="submit" name="formAlterarAula" value="Alterar" />
+                        <a href="aula.jsp" role="button">Voltar</a>
+                    </form>
+                <% } else { %>
+                    <h2>Nova Aula</h2>
+                    <form>
+                        Nome: <input type="text" name="nome" required />
+                        Contéudo: <input type="text" name="conteudo" required />   
+                        <input type="hidden" name="disciplina" value="<%= session.getAttribute("disciplina") %>" />   
+                        <input type="submit" name="formNovaAula" value="Cadastrar" />
+                    </form>
+                <% } %>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Aula</th>
+                        <th>Conteúdo</th>
+                        <th>Comandos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (Aula a : Aula.getAulas()) { %>
+                        <tr>
+                            <td><%= a.getCod() %></td>
+                            <td><%= a.getNome() %></td>
+                            <td><%= a.getConteudo() %></td>
+                            <td>
+                                <form>
+                                    <input type="hidden" name="cod" value="<%= a.getCod() %>" />
+                                    <input type="submit" name="tableAlterarAula" value="Alterar" />
+                                    <input type="submit" name="formRemoverAula" value="Remover" />
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <% } else {
                 if (errorMessage != null) { %>
                 <h2 style="color: red"><%= error %></h2>
                 <% } %>
@@ -92,6 +162,6 @@
                     </section>
                     <% } %>
             <% } %>
-        <% } %>
+        <% } } %>
     </body>
 </html>
