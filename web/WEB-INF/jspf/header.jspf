@@ -46,6 +46,7 @@
         <a href="<%= caminho %>/index.jsp">Inicio</a>
         <% if (user.getPermissao().equals("admin")) { %>
             <a href="<%= caminho %>/admin/usuario.jsp" />Usuários</a>
+            <a href="<%= caminho %>/admin/curso.jsp" />Cursos</a>
         <% } %>
         <% if (user.getPermissao().equals("professor")) { %>
             <a href="<%= caminho %>/professor/desempenho.jsp" />Desempenho</a>
