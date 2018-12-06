@@ -162,4 +162,6 @@ public class Usuario {
         Object parameters[] = {id};
         DatabaseConnector.execute(SQL, parameters);
     }
+    
+    
 }

@@ -1,5 +1,7 @@
 package br.com.fatecpg.portal;
 
+import java.util.ArrayList;
+
 public class Teste {
     private long cod;
     private String nome;
@@ -33,6 +35,5 @@ public class Teste {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-    
+    }  
 }
