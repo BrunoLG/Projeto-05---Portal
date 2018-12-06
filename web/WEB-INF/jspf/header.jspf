@@ -51,6 +51,7 @@
 <% } %>
 <% if (user.getPermissao().equals("professor")) {%>
 <a href="<%= caminho%>/professor/desempenho.jsp" />Desempenho</a>
+<a href="<%= caminho%>/professor/teste.jsp" />Teste</a>
 <% } %>
 </h2>
 <% }%>
