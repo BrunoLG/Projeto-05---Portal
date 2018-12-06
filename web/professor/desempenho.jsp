@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
 <%@page import="br.com.fatecpg.portal.HistoricoTeste"%>
 <%@page import="br.com.fatecpg.portal.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,27 +24,27 @@
                     <tr>
                         <th>Aluno</th>
                         <th>Nota</th>
-                        <th>Curso</th>
+                        <th>Disciplina</th>
                         <th>Data</th>
                     </tr>
                 </thead>
-                <%if(HistoricoTeste.getTesteHistorico().isEmpty()){%>
+                <%if(HistoricoTeste.getTesteHistorico(user.getCurso()).isEmpty()){%>
                     <tbody>
                         <td colspan="4">O histórico está vázio</td>
                     </tbody>
-                <%}%>
+                <%}else{%>
                 <tbody>
-                    <%for(HistoricoTeste ht: HistoricoTeste.getTesteHistorico()){%>
-                        <%if(ht.getCurso().equals(user.getCurso())){%>
+                    <%DateFormat df = new SimpleDateFormat("dd/MM/yyyy");%>
+                    <%for(HistoricoTeste ht: HistoricoTeste.getTesteHistorico(user.getCurso())){%>
                             <tr>
                                 <td><%= ht.getTeste()%></td>
                                 <td><%= ht.getNota()%></td>
                                 <td><%= ht.getCurso()%></td>
-                                <td><%= ht.getData()%></td>
+                                <td><%= df.format(ht.getData())%></td>
                             </tr>
-                        <%}%>
                     <%}%>
-                </tbody>  
+                </tbody> 
+                <%}%>
             </table>
             <%}%>
         <%}%>

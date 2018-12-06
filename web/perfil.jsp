@@ -58,8 +58,8 @@
                         <tbody>
                             <tr>
                                 <%
-                                            for (HistoricoTeste t : HistoricoTeste.listarTestes(u.getCod())) {%>
-                                <td><%= t.getCurso() %></td>
+                                for (HistoricoTeste t : HistoricoTeste.listarTestes(u.getCod())) {%>
+                                <td><%= t.getDisciplina()%></td>
                                 <td><%= t.getNota()%></td>
                             </tr>
                             <%}%>
