@@ -1,8 +1,19 @@
+<%@page import="br.com.fatecpg.portal.Usuario"%>
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-  <a class="navbar-brand font-weight-bold" href="index.jsp">Projeto 6</a>
+    <a class="navbar-brand font-weight-bold" href="index.jsp">Projeto 6</a>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
+        <%
+          if (session.getAttribute("usuario_logado") == null) { %>
+        <li class="nav-item">
             <a class="btn btn-light font-weight-bold" href="login.jsp" role="button">Login</a>
-      </li>
+        </li>
+        <%} else {%>
+        <li class="nav-item">
+            <a class="btn btn-light font-weight-bold mr-3" href="perfil.jsp" role="button">Perfil</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-light font-weight-bold" href="logout.jsp" role="button">Sair</a>
+        </li>
+        <%}%>
     </ul>
 </nav>
