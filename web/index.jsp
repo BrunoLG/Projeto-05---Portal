@@ -8,10 +8,20 @@
     </head>
     <body class="bg-light">
         <%@ include file="WEB-INF/jspf/menu.jspf" %>
+        <%@page import="br.com.fatecpg.portal.Usuario"%>
+        <% if (session.getAttribute("usuario_logado") != null) {
+                Usuario u = (Usuario) session.getAttribute("usuario_logado"); %>
         <div class="bg-dark py-5">
             <div class="container">
-                <h1 class="text-white text-center">Nome da empresa.</h1>
-                <h4 class="text-white text-center font-weight-light">Slogam da empresa aqui.</h4>
+                <h1 class="text-white text-center">Disciplinas</h1>
+                <h4 class="text-white text-center font-weight-light"><%= u.getCurso()%></h4>
+            </div>
+        </div>
+        <% } else {%>
+        <div class="bg-dark py-5">
+            <div class="container">
+                <h1 class="text-white text-center">Nome da empresa</h1>
+                <h4 class="text-white text-center font-weight-light">Slogam da empresa aqui</h4>
             </div>
         </div>
         <div class="bg-light">
@@ -49,6 +59,7 @@
                 </div>
             </div>
         </div>
-       <%@ include file="WEB-INF/jspf/footer.jspf" %> 
+        <%}%>
+        <%@ include file="WEB-INF/jspf/footer.jspf" %> 
     </body>
 </html>
