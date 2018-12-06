@@ -32,8 +32,8 @@
         String nome = request.getParameter("nome");
         String usuario = request.getParameter("usuario");
         long senha = request.getParameter("senha").hashCode();
-        String curso = request.getParameter("curso");
-        String permissao = request.getParameter("permissao");
+        long curso = Long.parseLong(request.getParameter("curso"));
+        long permissao = Long.parseLong(request.getParameter("permissao"));
         try {
             Usuario.adicionarUsuario(nome, usuario, senha, curso, permissao);
             response.sendRedirect(request.getRequestURI());
@@ -73,6 +73,7 @@
                     </select>
                     Curso: 
                     <select name="curso" required >
+                        <option value="">Nenhum</option>
                         <% for (Curso c : Curso.getCursos()) { %>
                                 <option value="<%= c.getCod() %>"><%= c.getNome() %></option>
                         <% } %>

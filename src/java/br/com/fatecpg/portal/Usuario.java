@@ -140,13 +140,8 @@ public class Usuario {
         return usuarios;
     }
     
-    public static void adicionarUsuario (String nome, String login, long senha, String curso, String permissao) throws Exception{
-        String SQL = "INSERT INTO TB_USUARIO VALUES (default, ?, ?, ?, " +
-                        " (SELECT CD_CURSO FROM TB_CURSO " +
-                            "WHERE NM_CURSO = ? ), " +
-                        " (SELECT CD_PERMISSAO FROM TB_PERMISSAO " +
-                            " WHERE NM_PERMISSAO = ? ) " +
-                      ")";
+    public static void adicionarUsuario (String nome, String login, long senha, long curso, long permissao) throws Exception{
+        String SQL = "INSERT INTO TB_USUARIO VALUES (default, ?, ?, ?, ?, ? )";
         Object parameters[] = {nome, login, senha, curso, permissao};
         DatabaseConnector.execute(SQL, parameters);
     }
