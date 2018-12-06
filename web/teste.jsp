@@ -1,7 +1,7 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="br.com.fatecpg.portal.Disciplina"%>
 <%@page import="java.util.Date"%>
 <%@page import="br.com.fatecpg.portal.HistoricoTeste"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="br.com.fatecpg.portal.Alternativa"%>
 <%@page import="br.com.fatecpg.portal.Questao"%>
 <%@page import="br.com.fatecpg.portal.Teste"%>
@@ -15,6 +15,7 @@
     <body>
         <%@include file="WEB-INF/jspf/header.jspf" %>
         <%
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
         long d = Long.parseLong(request.getParameter("disciplina"));
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         int contador = 1;
@@ -22,6 +23,7 @@
 
         if(request.getParameter("formEnviarTeste")!=null){
             double resultado = 0;
+            int qtQuestoes = 0; 
             long codTeste = Long.parseLong(request.getParameter("codigoTeste"));
             for(Teste t: Teste.getTeste(d)){
                 for(Questao q: Questao.getQuestoes(t.getCod())){
@@ -29,6 +31,7 @@
                     if(usuarioResultado.equals(q.getResposta())){
                         resultado++;
                     }
+                    qtQuestoes++;
                 }
             }
             try{
@@ -38,7 +41,7 @@
                 System.out.println(erro);
             }
             %>
-            <h2>Nota: <%= resultado %></h2>
+            <h2>Nota: <%= decimalFormat.format((resultado/qtQuestoes)*10) %></h2>
         <%}%>
         
         <% if (session.getAttribute("usuario") == null){%>
@@ -46,9 +49,8 @@
         <%}else{
             usuario = (Usuario) session.getAttribute("usuario");%>
             <h2>Nome da disciplina</h2>
-            <% if (usuario.getPermissao().equals("admin") || usuario.getPermissao().equals("professor")) {
-                response.sendRedirect("criacaoTeste.jsp?disciplina=1");
-            %>
+            <% if (usuario.getPermissao().equals("admin") || usuario.getPermissao().equals("professor")) {%>
+            <h3>Área restrita para alunos</h3>
             <%}else{%>
                 <%if(Teste.getTeste(d).isEmpty()){%>
                 <h3>Não existe nenhum teste cadastrado.</h3>
