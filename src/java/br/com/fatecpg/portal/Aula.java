@@ -117,4 +117,22 @@ public class Aula {
         Object parameters[] = {cod};
         DatabaseConnector.execute(SQL, parameters);
     }
+    
+    public static ArrayList<Aula> listarAulas (long cod)throws Exception{
+        String SQL = "select cd_aula, nm_aula, ds_conteudo, nm_disciplina from tb_usuario U join tb_curso C " + 
+                "on U.cd_curso = C.cd_curso join tb_disciplina D on C.cd_curso = D.cd_curso join " +
+                "tb_aula A on D.cd_disciplina = A.cd_disciplina where cd_usuario = ? ";
+        ArrayList<Aula> aulas = new ArrayList<>();
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{cod});
+        for (int i = 0; i < list.size(); i++) {
+            Object row[] = list.get(i);
+            Aula a = new Aula(
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (String) row[3]);
+            aulas.add(a);
+        }
+        return aulas;
+    }
 }

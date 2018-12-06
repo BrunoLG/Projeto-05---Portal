@@ -80,4 +80,22 @@ public class HistoricoTeste {
         }
         return historicoTestes;
     }
+    public static ArrayList<HistoricoTeste> listarTestes (long cod)throws Exception{
+        String SQL = "select cd_historico, cd_nota, dt_teste, nm_disciplina, nm_usuario from tb_historico_teste H " +
+                "join tb_teste T on H.cd_teste = T.cd_teste join tb_disciplina D "
+                + " on T.cd_disciplina = D.cd_disciplina join tb_usuario U on U.cd_usuario = H.cd_usuario where H.cd_usuario = ?";
+        ArrayList<HistoricoTeste> testes = new ArrayList<>();
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{cod});
+        for (int i = 0; i < list.size(); i++) {
+            Object row[] = list.get(i);
+            HistoricoTeste t = new HistoricoTeste(
+                    (long) row[0],
+                    (double) row[1],
+                    (Date) row[2],
+                    (String) row[3],
+                    (String) row[4]);
+            testes.add(t);
+        }
+        return testes;
+    }
 }
