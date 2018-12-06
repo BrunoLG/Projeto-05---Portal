@@ -47,7 +47,7 @@
             usuario = (Usuario) session.getAttribute("usuario");%>
             <h2>Nome da disciplina</h2>
             <% if (usuario.getPermissao().equals("admin") || usuario.getPermissao().equals("professor")) {
-                response.sendRedirect("criacaoTeste.jsp");
+                response.sendRedirect("criacaoTeste.jsp?disciplina=1");
             %>
             <%}else{%>
                 <%if(Teste.getTeste(d).isEmpty()){%>
