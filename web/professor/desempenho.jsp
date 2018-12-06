@@ -1,3 +1,4 @@
+<%@page import="br.com.fatecpg.portal.HistoricoAula"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="br.com.fatecpg.portal.HistoricoTeste"%>
@@ -19,6 +20,7 @@
             if (!user.getPermissao().equals("professor")) { %>
             <h2>Você não tem permissão para acessar este recurso!</h2>
             <%}else{%>
+            <h2>Melhores notas!</h2>
             <table border="1">
                 <thead>
                     <tr>
@@ -36,12 +38,12 @@
                 <tbody>
                     <%DateFormat df = new SimpleDateFormat("dd/MM/yyyy");%>
                     <%for(HistoricoTeste ht: HistoricoTeste.getTesteHistorico(user.getCurso())){%>
-                            <tr>
-                                <td><%= ht.getTeste()%></td>
-                                <td><%= ht.getNota()%></td>
-                                <td><%= ht.getCurso()%></td>
-                                <td><%= df.format(ht.getData())%></td>
-                            </tr>
+                        <tr>
+                            <td><%= ht.getTeste()%></td>
+                            <td><%= ht.getNota()%></td>
+                            <td><%= ht.getCurso()%></td>
+                            <td><%= df.format(ht.getData())%></td>
+                        </tr>
                     <%}%>
                 </tbody> 
                 <%}%>
