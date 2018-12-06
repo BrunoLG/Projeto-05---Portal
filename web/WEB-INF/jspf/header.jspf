@@ -4,53 +4,54 @@
 <link rel='stylesheet' type='text/css' href='css/estilo.css'/>
 <%  String caminho = request.getContextPath();
     String errorMessage = null;
-    if (request.getParameter("formLogin") != null){
+    if (request.getParameter("formLogin") != null) {
         String login = request.getParameter("usuario");
         String senha = request.getParameter("senha");
         Usuario u = Usuario.getUsuario(login, senha);
-        
+
         if (u == null) {
             errorMessage = "Usuário e/ou senha inválido(s)";
-        } else{
+        } else {
             session.setAttribute("usuario", u);
             response.sendRedirect(request.getRequestURI());
         }
-        
+
     }
-    if (request.getParameter("formLoggoff") != null){
+    if (request.getParameter("formLoggoff") != null) {
         session.removeAttribute("usuario");
         response.sendRedirect(request.getRequestURI());
     }
 %>
 <h1>Portal - Grupo 06</h1>
-<% if (errorMessage != null) { %>
-    <h3 style="color: red"><%= errorMessage %></h3>
+
+<% if (session.getAttribute("usuario") == null) { %>
+<form method="post">
+    Usuário: <input type="text" name="usuario" required/>
+    Senha: <input type="password" name="senha" required/>
+    <input type="submit" name="formLogin" value="Entrar" />
+</form>
+<% if (errorMessage != null) {%>
+<h3 style="color: red"><%= errorMessage%></h3>
 <% } %>
-<% if(session.getAttribute("usuario") == null){ %>
-    <form method="post">
-        Usuário: <input type="text" name="usuario" required/>
-        Senha: <input type="password" name="senha" required/>
-        <input type="submit" name="formLogin" value="Entrar" />
-    </form>
 <% } else { %>
-    <form>
-        <% Usuario user = (Usuario) session.getAttribute("usuario"); %>
-        Bem vindo, <%= user.getNome()%> <br>
-        Cargo: <%= user.getPermissao() %> <br>
-        <% if (!user.getPermissao().equals("admin")) { %>
-            Curso: <%= user.getCurso() %>
-        <% } %>
-        <input type="submit" name="formLoggoff" value="Sair" />
-    </form>
-    <h2>
-        <a href="<%= caminho %>/index.jsp">Inicio</a>
-        <% if (user.getPermissao().equals("admin")) { %>
-            <a href="<%= caminho %>/admin/usuario.jsp" />Usuários</a>
-            <a href="<%= caminho %>/admin/curso.jsp" />Cursos</a>
-        <% } %>
-        <% if (user.getPermissao().equals("professor")) { %>
-            <a href="<%= caminho %>/professor/desempenho.jsp" />Desempenho</a>
-        <% } %>
-    </h2>
+<form>
+    <% Usuario user = (Usuario) session.getAttribute("usuario");%>
+    Bem vindo, <%= user.getNome()%> <br>
+    Cargo: <%= user.getPermissao()%> <br>
+    <% if (!user.getPermissao().equals("admin")) {%>
+    Curso: <%= user.getCurso()%>
+    <% }%>
+    <input type="submit" name="formLoggoff" value="Sair" />
+</form>
+<h2>
+    <a href="<%= caminho%>/index.jsp">Inicio</a>
+    <% if (user.getPermissao().equals("admin")) {%>
+    <a href="<%= caminho%>/admin/usuario.jsp" />Usuários</a>
+<a href="<%= caminho%>/admin/curso.jsp" />Cursos</a>
 <% } %>
+<% if (user.getPermissao().equals("professor")) {%>
+<a href="<%= caminho%>/professor/desempenho.jsp" />Desempenho</a>
+<% } %>
+</h2>
+<% }%>
 <hr/>
