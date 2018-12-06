@@ -1,4 +1,9 @@
 <%@page import="br.com.fatecpg.portal.Usuario"%>
+<% if(session.getAttribute("usuario_logado")!= null){ 
+   response.sendRedirect("perfil.jsp");
+   Usuario u = (Usuario) session.getAttribute("usuario_logado");
+}
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +17,7 @@
         <div class="container py-5">
             <div class="row">
                 <div class="col-md-6">
-                    <form class="py-4">
+                    <form class="py-4" method="post">
                         <div class="form-group">
                             <label>Usuário: </label>
                             <input class="form-control" placeholder="Digite um usuário." type="text" name="usuario">
@@ -38,7 +43,7 @@
                     </header>
                     <%} else {
                                 session.setAttribute("usuario_logado", u);
-                                response.sendRedirect("perfil.jsp");
+                                response.sendRedirect("index.jsp");
                             }
                         }
                     %>
@@ -53,5 +58,6 @@
                 </div>
             </div>
         </div>
+        <%@ include file="WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>
