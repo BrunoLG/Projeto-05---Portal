@@ -56,11 +56,9 @@ public class Alternativa {
     }
     
     public static void adicionarAlternativa (String alternativa, String questao) throws Exception{
-        String SQL = "INSERT INTO TB_ALTERNATIVA VALUES (default, ? " +
-                        " (SELECT CD_QUESTAO FROM TB_QUESTAO " +
-                            "WHERE NM_QUESTAO = ? ) " +
-                      ")";
+        String SQL = "INSERT INTO TB_ALTERNATIVA VALUES (default, ?, ?) ";
         Object parameters[] = {alternativa, questao};
         DatabaseConnector.execute(SQL, parameters);
     }
+    
 }

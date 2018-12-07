@@ -87,11 +87,8 @@ public class Aula {
         return aulas;
     }
     
-    public static void adicionarAula (String nome, String conteudo, String disciplina) throws Exception{
-        String SQL = "INSERT INTO TB_AULA VALUES (default, ?, ?, " +
-                        " (SELECT CD_DISCIPLINA FROM TB_DISCIPLINA " +
-                            "WHERE NM_DISCIPLINA = ? ) " +
-                      ")";
+    public static void adicionarAula (String nome, String conteudo, long disciplina) throws Exception{
+        String SQL = "INSERT INTO TB_AULA VALUES (default, ?, ?, ?)";
         Object parameters[] = {nome, conteudo, disciplina};
         DatabaseConnector.execute(SQL, parameters);
     }
@@ -122,6 +119,25 @@ public class Aula {
         String SQL = "select cd_aula, nm_aula, ds_conteudo, nm_disciplina from tb_usuario U join tb_curso C " + 
                 "on U.cd_curso = C.cd_curso join tb_disciplina D on C.cd_curso = D.cd_curso join " +
                 "tb_aula A on D.cd_disciplina = A.cd_disciplina where cd_usuario = ? ";
+        ArrayList<Aula> aulas = new ArrayList<>();
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{cod});
+        for (int i = 0; i < list.size(); i++) {
+            Object row[] = list.get(i);
+            Aula a = new Aula(
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2], 
+                    (String) row[3]);
+            aulas.add(a);
+        }
+        return aulas;
+    }
+    
+    public static ArrayList<Aula> getAulas(long cod) throws Exception {
+        String SQL = "SELECT CD_AULA, NM_AULA, DS_CONTEUDO, "
+                + "(SELECT D.NM_DISCIPLINA FROM TB_DISCIPLINA D "
+                + "WHERE D.CD_DISCIPLINA = A.CD_DISCIPLINA) FROM "
+                + "TB_AULA A WHERE A.CD_DISCIPLINA = ?";
         ArrayList<Aula> aulas = new ArrayList<>();
         ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{cod});
         for (int i = 0; i < list.size(); i++) {
