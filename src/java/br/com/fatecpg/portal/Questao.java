@@ -48,6 +48,23 @@ public class Questao {
         this.codTeste = codTeste;
     }
     
+    public static ArrayList<Questao> getQuestoes() throws Exception {
+        String SQL = "SELECT CD_QUESTAO, DS_QUESTAO, NM_RESPOSTA, CD_TESTE" +
+                    " FROM TB_QUESTAO ";
+        ArrayList<Questao> questoes = new ArrayList<>();
+        ArrayList<Object[]> list = DatabaseConnector.getQuery(SQL, new Object[]{});
+        for (int i = 0; i < list.size(); i++) {
+            Object row[] = list.get(i);
+            Questao q = new Questao(
+                    (long) row[0],
+                    (String) row[1],
+                    (String) row[2],
+                    (long) row[3]);
+            questoes.add(q);
+        }
+        return questoes;
+    }
+    
     public static ArrayList<Questao> getQuestoes(long cod) throws Exception {
         String SQL = "SELECT CD_QUESTAO, DS_QUESTAO, NM_RESPOSTA, CD_TESTE" +
                     " FROM TB_QUESTAO WHERE CD_TESTE = ? ";
