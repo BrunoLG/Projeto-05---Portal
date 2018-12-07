@@ -1,1 +1,5 @@
 <link rel='stylesheet' type='text/css' href='css/bootstrap.min.css'/>
+<link rel='stylesheet' type='text/css' href='../css/bootstrap.min.css'/>
+<script src="css/jquery.min.js"></script> 
+<script src="css/popper.js"></script> 
+<script src="css/bootstrap.min.js"></script> 
