@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="br.com.fatecpg.portal.HistoricoAula"%>
 <%@page import="java.text.DateFormat"%>
@@ -5,6 +6,9 @@
 <%@page import="br.com.fatecpg.portal.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    DecimalFormat decimalFormat = new DecimalFormat("#.#");
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -48,7 +52,7 @@
                     <%for(HistoricoTeste ht: HistoricoTeste.getTesteHistorico(user.getCurso())){%>
                             <tr>
                                 <td><%= ht.getTeste()%></td>
-                                <td><%= ht.getNota()%></td>
+                                <td><%= decimalFormat.format(ht.getNota())%></td>
                                 <td><%= ht.getCurso()%></td>
                                 <td><%= df.format(ht.getData())%></td>
                             </tr>

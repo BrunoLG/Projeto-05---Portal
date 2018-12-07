@@ -36,7 +36,7 @@
                     }
                 }
                 try {
-                    HistoricoTeste.adicionarTesteHistorico(resultado, new Date(), codTeste, usuario.getCod());
+                    HistoricoTeste.adicionarTesteHistorico((resultado / qtQuestoes) * 10, new Date(), codTeste, usuario.getCod());
                 } catch (Exception e) {
                     erro = e.getMessage();
                     System.out.println(erro);
