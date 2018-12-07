@@ -11,13 +11,13 @@
     </head>
     <body>
         <%
-            Usuario u = (Usuario) session.getAttribute("usuario_logado");
+            Usuario user = (Usuario) session.getAttribute("usuario_logado");
         %>
         <%@ include file="WEB-INF/jspf/menu.jspf" %>
         <div class="bg-dark py-5">
             <div class="container">
-                <h1 class="text-white text-center">Bem vindo(a), <%= u.getNome()%></h1>
-                <h4 class="text-white text-center font-weight-light"><%= u.getCurso()%></h4>
+                <h1 class="text-white text-center">Bem vindo(a), <%= user.getNome()%></h1>
+                <h4 class="text-white text-center font-weight-light"><%= user.getCurso()%></h4>
             </div>
         </div>
         <div class="container">
@@ -36,9 +36,9 @@
                         <tbody>
                             <tr>
                                 <%
-                                    for (Aula a : Aula.listarAulas(u.getCod())) {%>
-                                <td><%= a.getNome()%></td>
-                                <td><%= a.getDisciplina()%></td>
+                                    for (Aula a : Aula.listarAulas(user.getCod())) {%>
+                                <td class="bg-light"><%= a.getNome()%></td>
+                                <td class="bg-light"><%= a.getDisciplina()%></td>
                             </tr>
                             <%}%>
                         </tbody>
@@ -58,9 +58,9 @@
                         <tbody>
                             <tr>
                                 <%
-                                for (HistoricoTeste t : HistoricoTeste.listarTestes(u.getCod())) {%>
-                                <td><%= t.getDisciplina()%></td>
-                                <td><%= t.getNota()%></td>
+                                    for (HistoricoTeste t : HistoricoTeste.listarTestes(user.getCod())) {%>
+                                <td class="bg-light"><%= t.getDisciplina()%></td>
+                                <td class="bg-light"><%= t.getNota()%></td>
                             </tr>
                             <%}%>
                         </tbody>
@@ -68,5 +68,6 @@
                 </div>
             </div>
         </div>
+        <%@ include file="WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>
