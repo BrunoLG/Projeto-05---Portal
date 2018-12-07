@@ -22,12 +22,16 @@
         </div>
         <div class="container-fluid mb-5">
             <div class="row mt-5">
-                <% for (Curso c : Curso.getCursos()) {%>
+                <% for (Curso c : Curso.getCursos()) {
+                        if (!c.getNome().equals("Nenhum")) {
+                %>
                 <div class="col-sm-4">
                     <header class="mt-5 py-2 border-left border-primary bg-light" style="border-width: 5px !important;">
                         <h5 class="ml-4"><%=c.getNome()%></h5>
                     </header>
-                    <% for (Disciplina d : Disciplina.getDisciplinasCurso(c.getCod())) {%>
+                    <% for (Disciplina d : Disciplina.getDisciplinasCurso(c.getCod())) {
+                    %>
+
                     <div class="card text-center mt-2">
                         <div class="card-body">
                             <p class="h6"><%= d.getNome()%></p>
@@ -39,6 +43,7 @@
                     </div>
                     <%}%>
                 </div>
+                <%}%>
                 <%}%>
             </div>
 
