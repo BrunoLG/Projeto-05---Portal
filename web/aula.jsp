@@ -124,7 +124,7 @@
                     </form>
                     <% } %>
                 </div>
-                <div class="col-md-7 mt-5">
+                <div class="col-md-12 mt-5">
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
