@@ -1,4 +1,5 @@
 <%@page import="java.text.SimpleDateFormat"%>
+<%@page import="br.com.fatecpg.portal.HistoricoAula"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="br.com.fatecpg.portal.HistoricoTeste"%>
 <%@page import="br.com.fatecpg.portal.Usuario"%>
@@ -7,20 +8,29 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <%@ include file="../WEB-INF/jspf/style.jspf" %>
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../WEB-INF/jspf/header.jspf" %>
-        <h1>Desempenho</h1>
-        <% if (session.getAttribute("usuario") == null) { %>
+        <%@ include file="../WEB-INF/jspf/menu.jspf" %>
+        <div class="bg-dark py-5">
+            <div class="container">
+                <h1 class="text-white text-center">Desempenho</h1>
+            </div>
+        </div>
+        <% if (session.getAttribute("usuario_logado") == null) { %>
             <h2>É preciso estar autenticado para acessar este recurso</h2>
         <%}else{
-            Usuario user = (Usuario) session.getAttribute("usuario");
+            Usuario user = (Usuario) session.getAttribute("usuario_logado");
             if (!user.getPermissao().equals("professor")) { %>
             <h2>Você não tem permissão para acessar este recurso!</h2>
             <%}else{%>
-            <table border="1">
-                <thead>
+            <div class="container mb-5 mt-5">
+            <header class="mt-5 mb-3 py-2 border-left border-primary bg-light" style="border-width: 5px !important;">
+                <h5 class="ml-4">Melhores notas</h5>
+            </header>
+            <table class="table">
+                <thead class="thead-dark">
                     <tr>
                         <th>Aluno</th>
                         <th>Nota</th>
@@ -48,5 +58,7 @@
             </table>
             <%}%>
         <%}%>
+            </div>
+        <%@ include file="../WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>

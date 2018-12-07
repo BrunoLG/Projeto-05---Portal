@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label>Senha: </label>
-                            <input class="form-control" placeholder="Digite uma senha." type="text" name="senha">
+                            <input class="form-control" placeholder="Digite uma senha." type="password" name="senha">
                         </div>
                         <input class="form-control btn-success" type="submit" value="Enviar" name="formLogin">
                     </form>
@@ -53,7 +53,7 @@
                     <h5 class="text-center">Não tem conta? Cadastre-se!</h5>
                     </div>
                     <div class="text-center">
-                        <a class="btn btn-primary font-weight-bold" href="cadastrar.jsp" role="button">Cadastrar</a>
+                        <a class="btn btn-primary font-weight-bold" href="cadastro.jsp" role="button">Cadastrar</a>
                     </div>
                 </div>
             </div>
