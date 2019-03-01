@@ -7,7 +7,7 @@
           String usuario = request.getParameter("usuario");
           long senha = request.getParameter("senha").hashCode();
           long curso = Long.parseLong(request.getParameter("curso"));
-          long permissao = 2;
+          long permissao = 3;
           Usuario.adicionarUsuario(nome, usuario, senha, curso, permissao);
           response.sendRedirect("index.jsp");
       }
